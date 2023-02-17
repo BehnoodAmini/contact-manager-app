@@ -13,6 +13,7 @@ const App = () => {
       <Navbar />
       <Contacts contacts={getContacts} loading={loading} />
     </div>
+    
   );
 }
 
