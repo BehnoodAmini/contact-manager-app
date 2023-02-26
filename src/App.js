@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import axios from 'axios';
 
 import { AddContact, EditContact, ViewContact, Contacts, Navbar } from './components';
 import './App.css';
@@ -8,6 +9,26 @@ const App = () => {
 
   const [loading, setLoading] = useState(false);
   const [getContacts, setContacts] = useState([]);
+  const [getGroups, setGroups] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+
+        const { data: contactsData } = await axios.get("http://localhost:9000/contacts");
+        const { data: groupsData } = await axios.get("http://localhost:9000/groups");
+        setContacts(contactsData);
+        setGroups(groupsData);
+
+        setLoading(false);
+      } catch (err) {
+        console.log(err.message);
+      }
+    };
+
+    fetchData();
+  }, [])
 
   return (
     <div className="App">
