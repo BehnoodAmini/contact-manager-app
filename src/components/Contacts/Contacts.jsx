@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 import Contact from "./Contact";
 import Spinner from "../Spinner";
 import { CURRENTLINE, ORANGE, PINK } from "../../helpers/colors";
@@ -10,10 +12,10 @@ const Contacts = ({ contacts, loading }) => {
                     <div className="row">
                         <div className="col">
                             <p className="h3">
-                                <button className="btn mx-2" style={{ backgroundColor: PINK }}>
+                                <Link to={"/contacts/add"} className="btn mx-2" style={{ backgroundColor: PINK }}>
                                     ساخت مخاطب جدید
                                     <i className="fa fa-plus-circle mx-2" />
-                                </button>
+                                </Link>
                             </p>
                         </div>
                     </div>
