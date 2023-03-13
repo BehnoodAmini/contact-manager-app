@@ -20,6 +20,8 @@ const App = () => {
     job: "",
     group: "",
   });
+  const [query, setQuery] = useState({ text: "" });
+  const [getFilteredContacts, setFilteredContacts] = useState([]);
 
   const navigate = useNavigate();
 
@@ -31,6 +33,7 @@ const App = () => {
         const { data: contactsData } = await getAllContacts();
         const { data: groupsData } = await getAllGroups();
         setContacts(contactsData);
+        setFilteredContacts(contactsData);
         setGroups(groupsData);
 
         setLoading(false);
@@ -117,16 +120,27 @@ const App = () => {
     }
   };
 
+  const contactSearch = (event) => {
+    setQuery({ ...query, text: event.target.value });
+    const allContacts = getContacts.filter((contact) =>{
+      return contact.fullname
+        .toLowerCase()
+        .includes(event.target.value.toLowerCase());  
+    });
+
+    setFilteredContacts(allContacts);
+  };
+
   return (
     <div className="App">
-      <Navbar />
+      <Navbar query={query} search={contactSearch} />
       <Routes>
         <Route path='/' element={<Navigate to='/contacts' />} />
         <Route
           path='/contacts'
           element={
             <Contacts
-              contacts={getContacts}
+              contacts={getFilteredContacts}
               loading={loading}
               confirmDelete={confirm}
             />
