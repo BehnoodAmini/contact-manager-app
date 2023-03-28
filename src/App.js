@@ -42,14 +42,22 @@ const App = () => {
   const createContactForm = async (event) => {
     event.preventDefault();
     try {
-      const { status } = await createContact(contact);
+      setLoading((prevLoading) => !prevLoading);
+      const { status, data } = await createContact(contact);
 
       if (status === 201) {
+        const allContacts = [...contacts, data];
+
+        setContacts(allContacts);
+        setFilteredContacts(allContacts);
+
         setContact({});
+        setLoading((prevLoading) => !prevLoading);
         navigate("/contacts");
       }
     } catch (err) {
       console.log(err.message);
+      setLoading((prevLoading) => !prevLoading);
     }
   };
 
@@ -144,29 +152,8 @@ const App = () => {
         <Navbar />
         <Routes>
           <Route path='/' element={<Navigate to='/contacts' />} />
-          <Route
-            path='/contacts'
-            element={
-              <Contacts
-                contacts={filteredContacts}
-                loading={loading}
-                confirmDelete={confirmDelete}
-              />
-            }
-          />
-
-          <Route
-            path='/contacts/add'
-            element={
-              <AddContact
-                loading={loading}
-                setContactInfo={onContactChange}
-                contact={contact}
-                groups={groups}
-                createContactForm={createContactForm}
-              />
-            }
-          />
+          <Route path='/contacts' element={<Contacts />} />
+          <Route path='/contacts/add' element={<AddContact />} />
           <Route path='/contacts/:contactId' element={<ViewContact />} />
           <Route path='/contacts/edit/:contactId' element={<EditContact />} />
         </Routes>
