@@ -7,7 +7,7 @@ import Spinner from "../Spinner";
 import { CURRENTLINE, ORANGE, PINK } from "../../helpers/colors";
 
 const Contacts = () => {
-    const { contacts, loading, deleteContact } = useContext(ContactContext);
+    const { filteredContacts, loading, deleteContact } = useContext(ContactContext);
 
     return (
         <>
@@ -29,8 +29,8 @@ const Contacts = () => {
                 loading ? <Spinner /> : (
                     <section className="container">
                         <div className="row">
-                            {contacts.length > 0
-                                ? contacts.map((c) => (
+                            {filteredContacts.length > 0
+                                ? filteredContacts.map((c) => (
                                     <Contact
                                         key={c.id}
                                         deleteContact={() => deleteContact(c.id, c.fullname)}
